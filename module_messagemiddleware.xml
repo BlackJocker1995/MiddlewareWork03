@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_messagemiddleware" default="compile.module.messagemiddleware">
+  <dirname property="module.messagemiddleware.basedir" file="${ant.file.module_messagemiddleware}"/>
+  
+  <property name="module.jdk.home.messagemiddleware" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.messagemiddleware" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.messagemiddleware" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.messagemiddleware" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="messagemiddleware.output.dir" value="${module.messagemiddleware.basedir}/bin"/>
+  <property name="messagemiddleware.testoutput.dir" value="${module.messagemiddleware.basedir}/bin"/>
+  
+  <path id="messagemiddleware.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="messagemiddleware.module.production.classpath">
+    <path refid="${module.jdk.classpath.messagemiddleware}"/>
+    <pathelement location="${basedir}/lib/activemq-all-5.4.3.jar"/>
+  </path>
+  
+  <path id="messagemiddleware.runtime.production.module.classpath">
+    <pathelement location="${messagemiddleware.output.dir}"/>
+    <pathelement location="${basedir}/lib/activemq-all-5.4.3.jar"/>
+  </path>
+  
+  <path id="messagemiddleware.module.classpath">
+    <pathelement location="${messagemiddleware.output.dir}"/>
+    <path refid="${module.jdk.classpath.messagemiddleware}"/>
+    <pathelement location="${basedir}/lib/activemq-all-5.4.3.jar"/>
+  </path>
+  
+  <path id="messagemiddleware.runtime.module.classpath">
+    <pathelement location="${messagemiddleware.output.dir}"/>
+    <pathelement location="${basedir}/lib/activemq-all-5.4.3.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.messagemiddleware">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.messagemiddleware">
+    <patternset refid="excluded.from.module.messagemiddleware"/>
+  </patternset>
+  
+  <path id="messagemiddleware.module.sourcepath">
+    <dirset dir="${module.messagemiddleware.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.messagemiddleware" depends="compile.module.messagemiddleware.production,compile.module.messagemiddleware.tests" description="Compile module MessageMiddleWare"/>
+  
+  <target name="compile.module.messagemiddleware.production" depends="register.custom.compilers" description="Compile module MessageMiddleWare; production classes">
+    <mkdir dir="${messagemiddleware.output.dir}"/>
+    <javac2 destdir="${messagemiddleware.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.messagemiddleware}/javac">
+      <compilerarg line="${compiler.args.messagemiddleware}"/>
+      <bootclasspath refid="messagemiddleware.module.bootclasspath"/>
+      <classpath refid="messagemiddleware.module.production.classpath"/>
+      <src refid="messagemiddleware.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.messagemiddleware"/>
+    </javac2>
+    
+    <copy todir="${messagemiddleware.output.dir}">
+      <fileset dir="${module.messagemiddleware.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.messagemiddleware.tests" depends="register.custom.compilers,compile.module.messagemiddleware.production" description="compile module MessageMiddleWare; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.messagemiddleware" description="cleanup module">
+    <delete dir="${messagemiddleware.output.dir}"/>
+    <delete dir="${messagemiddleware.testoutput.dir}"/>
+  </target>
+</project>

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MessageMiddleWare:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/MessageMiddleWare_jar</output-path>
+    <root id="archive" name="MessageMiddleWare.jar">
+      <element id="module-output" name="MessageMiddleWare" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/activemq-all-5.4.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
